@@ -1,0 +1,107 @@
+services:
+  userservice:
+    build:
+      context: .
+      dockerfile: src/UserService/Dockerfile
+    container_name: userservice
+    ports:
+      - "5001:80"
+    depends_on:
+      - sqlserver
+      - rabbitmq
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  gameservice:
+    build:
+      context: .
+      dockerfile: src/GameService/Dockerfile
+    container_name: gameservice
+    ports:
+      - "5002:80"
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  leaderboardservice:
+    build:
+      context: .
+      dockerfile: src/LeaderboardService/Dockerfile
+    container_name: leaderboardservice
+    ports:
+      - "5003:80"
+    depends_on:
+      - rabbitmq
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  notificationservice:
+    build:
+      context: .
+      dockerfile: src/NotificationService/Dockerfile
+    container_name: notificationservice
+    ports:
+      - "5004:80"
+    depends_on:
+      - rabbitmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  statisticsservice:
+    build:
+      context: .
+      dockerfile: src/StatisticsService/Dockerfile
+    container_name: statisticsservice
+    ports:
+      - "5005:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: src/ApiGateway/Dockerfile
+    container_name: apigateway
+    ports:
+      - "5000:80"
+    depends_on:
+      - userservice
+      - gameservice
+      - leaderboardservice
+      - notificationservice
+      - statisticsservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+
+networks:
+  default:
+    name: gamehub-network
