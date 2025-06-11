@@ -1,0 +1,4 @@
+@NotificationService_HostAddress = http://localhost:5285
+
+GET {{NotificationService_HostAddress}}/ping
+Accept: application/json

@@ -1,0 +1,4 @@
+@LeaderboardService_HostAddress = http://localhost:5222
+
+GET {{LeaderboardService_HostAddress}}/ping
+Accept: application/json

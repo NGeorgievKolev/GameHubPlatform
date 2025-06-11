@@ -1,0 +1,4 @@
+@UserService_HostAddress = http://localhost:5189
+
+GET {{UserService_HostAddress}}/ping
+Accept: application/json

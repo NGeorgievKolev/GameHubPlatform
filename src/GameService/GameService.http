@@ -1,0 +1,4 @@
+@GameService_HostAddress = http://localhost:5216
+
+GET {{GameService_HostAddress}}/ping
+Accept: application/json

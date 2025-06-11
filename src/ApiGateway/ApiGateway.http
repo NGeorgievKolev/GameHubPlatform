@@ -1,0 +1,4 @@
+@ApiGateway_HostAddress = http://localhost:5235
+
+GET {{ApiGateway_HostAddress}}/ping
+Accept: application/json
