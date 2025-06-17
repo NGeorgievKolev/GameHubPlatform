@@ -8,6 +8,7 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services.AddGameServiceCore(builder.Configuration);
+builder.Services.AddCors();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,6 +16,13 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors(policy =>
+    policy
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+);
 
 app.UseAuthorization();
 app.MapControllers();
