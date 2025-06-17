@@ -23,12 +23,6 @@ namespace GameService.Services
 
         }
 
-        public async Task SaveSessionAsync(string sessionId, TicTacToeGame session)
-        {
-            var json = JsonSerializer.Serialize(session);
-            await _db.StringSetAsync(SessionKeyPrefix + sessionId, json);
-        }
-
         public async Task DeleteSessionAsync(string sessionId)
         {
             await _db.KeyDeleteAsync(SessionKeyPrefix + sessionId);
@@ -40,7 +34,7 @@ namespace GameService.Services
                 throw new ArgumentException("SessionId is required", nameof(game.SessionId));
 
             var json = JsonSerializer.Serialize(game);
-            await _db.StringSetAsync(SessionKeyPrefix + game.SessionId, json);
+            await _db.StringSetAsync(SessionKeyPrefix + game.SessionId, json, TimeSpan.FromMinutes(15));
         }
 
     }
